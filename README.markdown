@@ -23,4 +23,4 @@ License
 -------
 Licensed under the Apache License, Version 2.0.
 
-[step]: https://github.com/maasdi/pentaho-mongodb-delete-plugin/raw/master/MongDB Delete.png "MongoDB Delete Step"
+[step]: https://raw.githubusercontent.com/maasdi/pentaho-mongodb-delete-plugin/master/MongDB%20Delete.png "MongoDB Delete Step"

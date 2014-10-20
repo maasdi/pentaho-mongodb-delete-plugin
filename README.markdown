@@ -15,8 +15,10 @@ Maven will compile and package all you need and will create new folder 'pentaho-
 
 Intallation
 --------
-Copy folder pentaho-mongodb-delete-plugin and all contents and paste to ${KETTLE/PDI INSTALATION DIRECTORY}/plugins/steps.
-If your PDI still running, please restart and you should see new steps MongoDB Delete under Big Data category
+1. Copy folder pentaho-mongodb-delete-plugin and all contents and paste to ${KETTLE/PDI INSTALATION DIRECTORY}/plugins/steps.
+2. If your PDI still running, please restart and you should see new steps MongoDB Delete under Big Data category
+
+
 ![alt text][step]
 
 License

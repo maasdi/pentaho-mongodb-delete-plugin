@@ -11,6 +11,13 @@
     <name>pentaho-mongodb-delete-plugin</name>
     <url>https://github.com/maasdi/pentaho-mongodb-delete-plugin</url>
 
+    <scm>
+        <connection>scm:git:ssh://github.com/maasdi/pentaho-mongodb-delete-plugin.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com/maasdi/pentaho-mongodb-delete-plugin.git</developerConnection>
+        <url>https://github.com/maasdi/pentaho-mongodb-delete-plugin</url>
+        <tag>HEAD</tag>
+    </scm>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <timestamp>${maven.build.timestamp}</timestamp>

@@ -3,6 +3,8 @@ Pentaho MongoDB Delete Plugin
 
 The Kettle Plugin to provides kettle steps for delete document inside a Mongo DB collection.
 
+[![Build Status](https://drone.io/github.com/maasdi/pentaho-mongodb-delete-plugin/status.png)](https://drone.io/github.com/maasdi/pentaho-mongodb-delete-plugin/latest)
+
 Building
 --------
 The Pentaho MongoDB Delete Plugin is built with Apache Maven for dependency management. To build from source code.

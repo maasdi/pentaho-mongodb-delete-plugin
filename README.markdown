@@ -1,6 +1,6 @@
 Pentaho MongoDB Delete Plugin
 =======================
-![alt text][status]
+[![Build Status](https://drone.io/github.com/maasdi/pentaho-mongodb-delete-plugin/status.png?ok=1)](https://drone.io/github.com/maasdi/pentaho-mongodb-delete-plugin/latest)
 
 The Kettle Plugin to provides kettle steps for delete document inside a Mongo DB collection.
 
@@ -30,4 +30,3 @@ Licensed under the Apache License, Version 2.0.
 
 [step]: https://raw.githubusercontent.com/maasdi/pentaho-mongodb-delete-plugin/master/MongDB%20Delete.png "MongoDB Delete Step"
 [download-release]: https://github.com/maasdi/pentaho-mongodb-delete-plugin/releases/download/1.0.0-RELEASE/pentaho-mongodb-delete-plugin-1.0.0-RELEASE.zip
-[status]: https://drone.io/github.com/maasdi/pentaho-mongodb-delete-plugin/status.png "Build Status"

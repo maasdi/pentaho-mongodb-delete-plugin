@@ -54,6 +54,9 @@ public class MongoDbDeleteMeta extends MongoDbMeta implements StepMetaInterface 
     private String m_writeRetries = "" + RETRIES;
     private String m_writeRetryDelay = "" + RETRY_DELAY;
     /** The list of paths to document fields for incoming kettle values */
+    private boolean useJsonQuery = false;
+    private boolean m_executeForEachIncomingRow = false; // only apply when use json query
+    private String m_jsonQuery = "";
     protected List<MongoDbDeleteMeta.MongoField> m_mongoFields;
 
     @Override
@@ -126,6 +129,30 @@ public class MongoDbDeleteMeta extends MongoDbMeta implements StepMetaInterface 
 
     public List<MongoField> getMongoFields() {
         return m_mongoFields;
+    }
+
+    public void setUseJsonQuery(boolean useJsonQuery) {
+        this.useJsonQuery = useJsonQuery;
+    }
+
+    public boolean isUseJsonQuery() {
+        return useJsonQuery;
+    }
+
+    public boolean isExecuteForEachIncomingRow() {
+        return m_executeForEachIncomingRow;
+    }
+
+    public void setExecuteForEachIncomingRow(boolean executeForEachIncomingRow) {
+        this.m_executeForEachIncomingRow = executeForEachIncomingRow;
+    }
+
+    public void setJsonQuery(String jsonQuery) {
+        m_jsonQuery = jsonQuery;
+    }
+
+    public String getJsonQuery() {
+        return m_jsonQuery;
     }
 
     /**
@@ -215,11 +242,20 @@ public class MongoDbDeleteMeta extends MongoDbMeta implements StepMetaInterface 
                 XMLHandler.addTagValue("journaled_writes", getJournal()));
 
         retval.append("    ").append(
-                XMLHandler.addTagValue("write_retries", m_writeRetries));
+                XMLHandler.addTagValue("write_retries", getWriteRetries()));
         retval.append("    ").append(
-                XMLHandler.addTagValue("write_retry_delay", m_writeRetryDelay));
+                XMLHandler.addTagValue("write_retry_delay", getWriteRetryDelay()));
 
-        if (m_mongoFields != null && m_mongoFields.size() > 0) {
+        retval.append("    ").append(
+                XMLHandler.addTagValue("use_json_query", isUseJsonQuery()));
+
+        if (isUseJsonQuery()) {
+            retval.append("    ").append(
+                XMLHandler.addTagValue("execute_each_incomming_row", isExecuteForEachIncomingRow()));
+
+            retval.append("    ").append(
+                XMLHandler.addTagValue("json_query", getJsonQuery()));
+        } else if (getMongoFields() != null && getMongoFields().size() > 0) {
             retval.append("\n    ").append(XMLHandler.openTag("mongo_fields"));
 
             for (MongoField field : m_mongoFields) {
@@ -278,21 +314,28 @@ public class MongoDbDeleteMeta extends MongoDbMeta implements StepMetaInterface 
             m_writeRetryDelay = writeRetryDelay;
         }
 
-        Node fields = XMLHandler.getSubNode(stepnode, "mongo_fields");
-        if (fields != null && XMLHandler.countNodes(fields, "mongo_field") > 0) {
-            int nrfields = XMLHandler.countNodes(fields, "mongo_field");
-            m_mongoFields = new ArrayList<MongoField>();
+        setUseJsonQuery("Y".equalsIgnoreCase(XMLHandler.getTagValue(stepnode, "use_json_query")));
 
-            for (int i = 0; i < nrfields; i++) {
-                Node fieldNode = XMLHandler.getSubNodeByNr(fields, "mongo_field", i);
+        if (isUseJsonQuery()) {
+            setExecuteForEachIncomingRow("Y".equalsIgnoreCase(XMLHandler.getTagValue(stepnode, "execute_each_incomming_row")));
+            setJsonQuery(XMLHandler.getTagValue(stepnode, "json_query"));
+        } else {
+            Node fields = XMLHandler.getSubNode(stepnode, "mongo_fields");
+            if (fields != null && XMLHandler.countNodes(fields, "mongo_field") > 0) {
+                int nrfields = XMLHandler.countNodes(fields, "mongo_field");
+                m_mongoFields = new ArrayList<MongoField>();
 
-                MongoField newField = new MongoField();
-                newField.m_mongoDocPath = XMLHandler.getTagValue(fieldNode, "mongo_doc_path");
-                newField.m_comparator = XMLHandler.getTagValue(fieldNode, "comparator");
-                newField.m_incomingField1 = XMLHandler.getTagValue(fieldNode, "incoming_field_1");
-                newField.m_incomingField2 = XMLHandler.getTagValue(fieldNode, "incoming_field_2");
+                for (int i = 0; i < nrfields; i++) {
+                    Node fieldNode = XMLHandler.getSubNodeByNr(fields, "mongo_field", i);
 
-                m_mongoFields.add(newField);
+                    MongoField newField = new MongoField();
+                    newField.m_mongoDocPath = XMLHandler.getTagValue(fieldNode, "mongo_doc_path");
+                    newField.m_comparator = XMLHandler.getTagValue(fieldNode, "comparator");
+                    newField.m_incomingField1 = XMLHandler.getTagValue(fieldNode, "incoming_field_1");
+                    newField.m_incomingField2 = XMLHandler.getTagValue(fieldNode, "incoming_field_2");
+
+                    m_mongoFields.add(newField);
+                }
             }
         }
     }
@@ -317,9 +360,7 @@ public class MongoDbDeleteMeta extends MongoDbMeta implements StepMetaInterface 
         setWriteConcern(rep.getStepAttributeString(id_step, "write_concern"));
         setWTimeout(rep.getStepAttributeString(id_step, "w_timeout"));
         setJournal(rep.getStepAttributeBoolean(id_step, 0, "journaled_writes"));
-
-        int nrfields = rep.countNrStepAttributes(id_step, "mongo_doc_path");
-
+        
         String writeRetries = rep.getStepAttributeString(id_step, "write_retries");
         if (!Const.isEmpty(writeRetries)) {
             m_writeRetries = writeRetries;
@@ -329,21 +370,29 @@ public class MongoDbDeleteMeta extends MongoDbMeta implements StepMetaInterface 
             m_writeRetryDelay = writeRetryDelay;
         }
 
-        if (nrfields > 0) {
-            m_mongoFields = new ArrayList<MongoField>();
+        setUseJsonQuery(rep.getStepAttributeBoolean(id_step, 0, "use_json_query"));
 
-            for (int i = 0; i < nrfields; i++) {
-                MongoField newField = new MongoField();
+        if (isUseJsonQuery()) {
+            setExecuteForEachIncomingRow(rep.getStepAttributeBoolean(id_step, 0, "execute_each_incomming_row"));
+            setJsonQuery(rep.getStepAttributeString(id_step, "json_query"));
+        } else {
+            int nrfields = rep.countNrStepAttributes(id_step, "mongo_doc_path");
 
-                newField.m_mongoDocPath = rep.getStepAttributeString(id_step, i, "mongo_doc_path");
-                newField.m_comparator = rep.getStepAttributeString(id_step, i, "comparator");
-                newField.m_incomingField1 = rep.getStepAttributeString(id_step, i, "incoming_field_1");
-                newField.m_incomingField2 = rep.getStepAttributeString(id_step, i, "incoming_field_2");
+            if (nrfields > 0) {
+                m_mongoFields = new ArrayList<MongoField>();
 
-                m_mongoFields.add(newField);
+                for (int i = 0; i < nrfields; i++) {
+                    MongoField newField = new MongoField();
+
+                    newField.m_mongoDocPath = rep.getStepAttributeString(id_step, i, "mongo_doc_path");
+                    newField.m_comparator = rep.getStepAttributeString(id_step, i, "comparator");
+                    newField.m_incomingField1 = rep.getStepAttributeString(id_step, i, "incoming_field_1");
+                    newField.m_incomingField2 = rep.getStepAttributeString(id_step, i, "incoming_field_2");
+
+                    m_mongoFields.add(newField);
+                }
             }
         }
-
     }
 
     @Override
@@ -386,7 +435,8 @@ public class MongoDbDeleteMeta extends MongoDbMeta implements StepMetaInterface 
                 getReadPreference());
         rep.saveStepAttribute(id_transformation, id_step, "write_concern",
                 getWriteConcern());
-        rep.saveStepAttribute(id_transformation, id_step, "w_timeout", getWTimeout());
+        rep.saveStepAttribute(id_transformation, id_step, "w_timeout",
+                getWTimeout());
         rep.saveStepAttribute(id_transformation, id_step, "journaled_writes",
                 getJournal());
 
@@ -395,14 +445,24 @@ public class MongoDbDeleteMeta extends MongoDbMeta implements StepMetaInterface 
         rep.saveStepAttribute(id_transformation, id_step, 0, "write_retry_delay",
                 m_writeRetryDelay);
 
-        if (m_mongoFields != null && m_mongoFields.size() > 0) {
-            for (int i = 0; i < m_mongoFields.size(); i++) {
-                MongoField field = m_mongoFields.get(i);
+        rep.saveStepAttribute(id_transformation, id_step, "use_json_query",
+                isUseJsonQuery());
 
-                rep.saveStepAttribute(id_transformation, id_step, i, "mongo_doc_path", field.m_mongoDocPath);
-                rep.saveStepAttribute(id_transformation, id_step, i, "comparator", field.m_comparator);
-                rep.saveStepAttribute(id_transformation, id_step, i, "incoming_field_1", field.m_incomingField1);
-                rep.saveStepAttribute(id_transformation, id_step, i, "incoming_field_2", field.m_incomingField2);
+        if (isUseJsonQuery()) {
+            rep.saveStepAttribute(id_transformation, id_step, "execute_each_incomming_row",
+                    isExecuteForEachIncomingRow());
+            rep.saveStepAttribute(id_transformation, id_step, "json_query",
+                    m_jsonQuery);
+        } else {
+            if (m_mongoFields != null && m_mongoFields.size() > 0) {
+                for (int i = 0; i < m_mongoFields.size(); i++) {
+                    MongoField field = m_mongoFields.get(i);
+
+                    rep.saveStepAttribute(id_transformation, id_step, i, "mongo_doc_path", field.m_mongoDocPath);
+                    rep.saveStepAttribute(id_transformation, id_step, i, "comparator", field.m_comparator);
+                    rep.saveStepAttribute(id_transformation, id_step, i, "incoming_field_1", field.m_incomingField1);
+                    rep.saveStepAttribute(id_transformation, id_step, i, "incoming_field_2", field.m_incomingField2);
+                }
             }
         }
     }

@@ -72,6 +72,8 @@ import com.mongodb.DBObject;
 import com.github.maasdi.mongo.NamedReadPreference;
 import com.github.maasdi.mongo.wrapper.MongoClientWrapper;
 import com.github.maasdi.mongo.wrapper.MongoClientWrapperFactory;
+import org.pentaho.di.ui.core.PropsUI;
+import org.pentaho.di.ui.core.widget.StyledTextComp;
 
 /**
  * Dialog class for MongoDbDelete step
@@ -112,6 +114,10 @@ public class MongoDbDeleteDialog extends BaseStepDialog implements StepDialogInt
     private TextVar m_writeRetries;
     private TextVar m_writeRetryDelay;
     private TableView m_mongoFieldsView;
+    private StyledTextComp m_jsonQueryView;
+    private Button m_useJsonQueryBut;
+    private Label m_executeForEachRowLabel;
+    private Button m_executeForEachRowBut;
     private ColumnInfo[] colInf;
     private Map<String, Integer> inputFields;
 
@@ -686,6 +692,42 @@ public class MongoDbDeleteDialog extends BaseStepDialog implements StepDialogInt
         filterLayout.marginHeight = 3;
         wFieldsComp.setLayout(filterLayout);
 
+        // use query
+        Label useDefinedQueryLab = new Label(wFieldsComp, SWT.RIGHT);
+        useDefinedQueryLab.setText(BaseMessages.getString(PKG, "MongoDbDeleteDialog.useQuery.Label"));
+        useDefinedQueryLab.setToolTipText(BaseMessages.getString(PKG, "MongoDbDeleteDialog.useQuery.TipText"));
+        props.setLook(useDefinedQueryLab);
+        fd = new FormData();
+        fd.left = new FormAttachment(0, 0);
+        fd.top = new FormAttachment(0, margin);
+        fd.right = new FormAttachment(middle, -margin);
+        useDefinedQueryLab.setLayoutData(fd);
+
+        m_useJsonQueryBut = new Button(wFieldsComp, SWT.CHECK);
+        props.setLook(m_useJsonQueryBut);
+        m_useJsonQueryBut.addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                m_currentMeta.setChanged();
+                if (m_useJsonQueryBut.getSelection()) {
+                    // show query
+                    setQueryJsonVisibility(true);
+                    // hide m_mongoFields
+                    setQueryFieldVisiblity(false);
+                } else {
+                    // show m_mongoFieldsView
+                    setQueryFieldVisiblity(true);
+                    // hide query
+                    setQueryJsonVisibility(false);
+                }
+            }
+        });
+        fd = new FormData();
+        fd.right = new FormAttachment(100, -margin);
+        fd.top = new FormAttachment(0, margin);
+        fd.left = new FormAttachment(middle, 0);
+        m_useJsonQueryBut.setLayoutData(fd);
+
         colInf = new ColumnInfo[]{
             new ColumnInfo(BaseMessages.getString(PKG, "MongoDbDeleteDialog.Fields.Path"), ColumnInfo.COLUMN_TYPE_TEXT, false),
             new ColumnInfo(BaseMessages.getString(PKG, "MongoDbDeleteDialog.Fields.Comparator"), ColumnInfo.COLUMN_TYPE_CCOMBO, false),
@@ -720,7 +762,7 @@ public class MongoDbDeleteDialog extends BaseStepDialog implements StepDialogInt
         // get fields but
         m_getFieldsBut = new Button(wFieldsComp, SWT.PUSH | SWT.CENTER);
         props.setLook(m_getFieldsBut);
-        m_getFieldsBut.setText(BaseMessages.getString(PKG, "MongoDbDeleteDialog.GetFieldsBut")); //$NON-NLS-1$
+        m_getFieldsBut.setText(BaseMessages.getString(PKG, "MongoDbDeleteDialog.GetFieldsBut"));
         fd = new FormData();
         // fd.right = new FormAttachment(100, 0);
         fd.bottom = new FormAttachment(100, -margin * 2);
@@ -736,7 +778,7 @@ public class MongoDbDeleteDialog extends BaseStepDialog implements StepDialogInt
 
         m_previewDocStructBut = new Button(wFieldsComp, SWT.PUSH | SWT.CENTER);
         props.setLook(m_previewDocStructBut);
-        m_previewDocStructBut.setText(BaseMessages.getString(PKG, "MongoDbDeleteDialog.PreviewDocStructBut")); //$NON-NLS-1$
+        m_previewDocStructBut.setText(BaseMessages.getString(PKG, "MongoDbDeleteDialog.PreviewDocStructBut"));
         fd = new FormData();
         // fd.right = new FormAttachment(100, 0);
         fd.bottom = new FormAttachment(100, -margin * 2);
@@ -750,13 +792,46 @@ public class MongoDbDeleteDialog extends BaseStepDialog implements StepDialogInt
         });
 
         m_mongoFieldsView = new TableView(transMeta, wFieldsComp, SWT.FULL_SELECTION | SWT.MULTI, colInf, 1, lsMod, props);
-
         fd = new FormData();
-        fd.top = new FormAttachment(0, margin * 2);
+        fd.top = new FormAttachment(m_useJsonQueryBut, margin * 2);
         fd.bottom = new FormAttachment(m_getFieldsBut, -margin * 2);
         fd.left = new FormAttachment(0, 0);
         fd.right = new FormAttachment(100, 0);
         m_mongoFieldsView.setLayoutData(fd);
+
+        // JSON Query
+        m_executeForEachRowLabel = new Label(wFieldsComp, SWT.RIGHT);
+        m_executeForEachRowLabel.setText(BaseMessages.getString(PKG, "MongoDbDeleteDialog.execEachRow.Label"));
+        props.setLook(m_executeForEachRowLabel);
+        fd = new FormData();
+        fd.bottom = new FormAttachment(100, -margin * 2);
+        fd.left = new FormAttachment(0, margin);
+        m_executeForEachRowLabel.setLayoutData(fd);
+
+        m_executeForEachRowBut = new Button(wFieldsComp, SWT.CHECK);
+        props.setLook(m_executeForEachRowBut);
+        m_executeForEachRowBut.addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                m_currentMeta.setChanged();
+            }
+        });
+        fd = new FormData();
+        fd.bottom = new FormAttachment(100, -margin * 2);
+        fd.left = new FormAttachment(m_executeForEachRowLabel, margin);
+        m_executeForEachRowBut.setLayoutData(fd);
+
+        m_jsonQueryView = new StyledTextComp(transMeta, wFieldsComp, SWT.FULL_SELECTION | SWT.MULTI
+        | SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL, "");
+        props.setLook(m_jsonQueryView, PropsUI.WIDGET_STYLE_FIXED);
+        m_jsonQueryView.addModifyListener(lsMod);
+
+        fd = new FormData();
+        fd.left = new FormAttachment(0, 0);
+        fd.right = new FormAttachment(100, -margin * 3);
+        fd.top = new FormAttachment(m_useJsonQueryBut, margin * 2);
+        fd.bottom = new FormAttachment(m_executeForEachRowLabel, -margin * 2);
+        m_jsonQueryView.setLayoutData(fd);
 
         fd = new FormData();
         fd.left = new FormAttachment(0, 0);
@@ -824,6 +899,13 @@ public class MongoDbDeleteDialog extends BaseStepDialog implements StepDialogInt
 
         getData();
 
+        // hide if not use json query
+        if (m_currentMeta.isUseJsonQuery()) {
+            setQueryFieldVisiblity(false);
+        } else {
+            setQueryJsonVisibility(false);
+        }
+
         shell.open();
         while (!shell.isDisposed()) {
             if (!display.readAndDispatch()) {
@@ -850,9 +932,11 @@ public class MongoDbDeleteDialog extends BaseStepDialog implements StepDialogInt
 
         getInfo(m_currentMeta);
 
-        if (m_currentMeta.getMongoFields() == null || m_currentMeta.getMongoFields().isEmpty()) {
+        if ((!m_currentMeta.isUseJsonQuery()) && (m_currentMeta.getMongoFields() == null || m_currentMeta.getMongoFields().isEmpty())) {
             // popup dialog warning that no paths have been defined
             showNoFieldMessageDialog();
+        } else if (m_currentMeta.isUseJsonQuery() && Const.isEmpty(m_currentMeta.getJsonQuery())) {
+            showNoQueryWarningDialog();
         }
 
         if (!m_originalMeta.equals(m_currentMeta)) {
@@ -1041,6 +1125,9 @@ public class MongoDbDeleteDialog extends BaseStepDialog implements StepDialogInt
         meta.setReadPreference(m_readPreference.getText());
         meta.setWriteRetries(m_writeRetries.getText());
         meta.setWriteRetryDelay(m_writeRetryDelay.getText());
+        meta.setUseJsonQuery(m_useJsonQueryBut.getSelection());
+        meta.setExecuteForEachIncomingRow(m_executeForEachRowBut.getSelection());
+        meta.setJsonQuery(m_jsonQueryView.getText());
 
         meta.setMongoFields(tableToMongoFieldList());
 
@@ -1096,6 +1183,10 @@ public class MongoDbDeleteDialog extends BaseStepDialog implements StepDialogInt
                 + MongoDbDeleteMeta.RETRIES));
         m_writeRetryDelay.setText(Const.NVL(m_currentMeta.getWriteRetryDelay(), "" //$NON-NLS-1$
                 + MongoDbDeleteMeta.RETRIES));
+
+        m_useJsonQueryBut.setSelection(m_currentMeta.isUseJsonQuery());
+        m_executeForEachRowBut.setSelection(m_currentMeta.isExecuteForEachIncomingRow());
+        m_jsonQueryView.setText(Const.NVL(m_currentMeta.getJsonQuery(),""));
 
         List<MongoDbDeleteMeta.MongoField> mongoFields = m_currentMeta.getMongoFields();
 
@@ -1323,9 +1414,29 @@ public class MongoDbDeleteDialog extends BaseStepDialog implements StepDialogInt
 
     private void showNoFieldMessageDialog() {
         ShowMessageDialog smd =
-                new ShowMessageDialog(shell, SWT.ICON_WARNING | SWT.OK, BaseMessages.getString(PKG,
+                new ShowMessageDialog(shell, SWT.ICON_WARNING | SWT.OK | SWT.CENTER, BaseMessages.getString(PKG,
                 "MongoDbDeleteDialog.ErrorMessage.NoFieldPathsDefined.Title"), BaseMessages.getString(PKG,
                 "MongoDbDeleteDialog.ErrorMessage.NoFieldPathsDefined"));
         smd.open();
+    }
+
+    private void showNoQueryWarningDialog() {
+        ShowMessageDialog smd =
+                new ShowMessageDialog(shell, SWT.ICON_WARNING | SWT.OK | SWT.CENTER, BaseMessages.getString(PKG,
+                "MongoDbDeleteDialog.ErrorMessage.NoJsonQueryDefined.Title"), BaseMessages.getString(PKG,
+                "MongoDbDeleteDialog.ErrorMessage.NoJsonQueryDefined"));
+        smd.open();
+    }
+
+    private void setQueryFieldVisiblity(boolean visible) {
+        m_mongoFieldsView.setVisible(visible);
+        m_getFieldsBut.setVisible(visible);
+        m_previewDocStructBut.setVisible(visible);
+    }
+
+    private void setQueryJsonVisibility(boolean visible) {
+        m_jsonQueryView.setVisible(visible);
+        m_executeForEachRowLabel.setVisible(visible);
+        m_executeForEachRowBut.setVisible(visible);
     }
 }

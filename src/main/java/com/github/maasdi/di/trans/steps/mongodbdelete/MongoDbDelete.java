@@ -38,6 +38,8 @@ import com.mongodb.MongoException;
 import com.mongodb.WriteResult;
 
 import com.github.maasdi.mongo.wrapper.MongoClientWrapperFactory;
+import com.mongodb.BasicDBObject;
+import com.mongodb.util.JSON;
 
 /**
  * Class MongoDbDelete, providing MongoDB delete functionality. User able to create criteria base on incoming fields.
@@ -51,6 +53,7 @@ public class MongoDbDelete extends BaseStep implements StepInterface {
     private MongoDbDeleteData data;
     protected int m_writeRetries = MongoDbDeleteMeta.RETRIES;
     protected int m_writeRetryDelay = MongoDbDeleteMeta.RETRY_DELAY;
+    private Object[] m_currentRowQuery = null;
 
     public MongoDbDelete(StepMeta stepMeta, StepDataInterface stepDataInterface, int copyNr, TransMeta transMeta, Trans trans) {
         super(stepMeta, stepDataInterface, copyNr, transMeta, trans);
@@ -67,36 +70,70 @@ public class MongoDbDelete extends BaseStep implements StepInterface {
             return false;
         }
 
-        if (first) {
-            first = false;
+        if (meta.isUseJsonQuery()) {
+            if (first) {
+                first = false;
 
-            data.setOutputRowMeta(getInputRowMeta());
-            // first check our incoming fields against our meta data for
-            // fields to delete
-            RowMetaInterface rmi = getInputRowMeta();
-            // this fields we are going to use for mongo output
-            List<MongoDbDeleteMeta.MongoField> mongoFields = meta.getMongoFields();
-            checkInputFieldsMatch(rmi, mongoFields);
+                data.setOutputRowMeta(getInputRowMeta());
+                data.init(MongoDbDelete.this);
 
-            data.setMongoFields(meta.getMongoFields());
-            data.init(MongoDbDelete.this);
-        }
-
-        if (!isStopped()) {
-
-            putRow(data.getOutputRowMeta(), row);
-
-            DBObject query = MongoDbDeleteData.getQueryObject(data.m_userFields, getInputRowMeta(), row, MongoDbDelete.this);
-            if (log.isDebug()) {
-                logDebug(BaseMessages.getString(PKG, "MongoDbDelete.Message.Debug.QueryForDelete", query));
-            }
-            // We have query delete
-            if (query != null) {
+                DBObject query = getQueryFromJSON(meta.getJsonQuery(), row);
                 commitDelete(query, row);
             }
-        }
 
-        return true;
+            if (meta.isExecuteForEachIncomingRow() && m_currentRowQuery == null) {
+                m_currentRowQuery = getRow();
+
+                if (m_currentRowQuery == null) {
+                    disconnect();
+                    setOutputDone();
+                    return false;
+                }
+
+                if (!first) {
+                    DBObject query = getQueryFromJSON(meta.getJsonQuery(), m_currentRowQuery);
+                    commitDelete(query, row);
+                }
+            }
+
+            if (!isStopped()) {
+                putRow(data.getOutputRowMeta(), row);
+            }
+
+            return true;
+        } else {
+
+            if (first) {
+                first = false;
+
+                data.setOutputRowMeta(getInputRowMeta());
+                // first check our incoming fields against our meta data for
+                // fields to delete
+                RowMetaInterface rmi = getInputRowMeta();
+                // this fields we are going to use for mongo output
+                List<MongoDbDeleteMeta.MongoField> mongoFields = meta.getMongoFields();
+                checkInputFieldsMatch(rmi, mongoFields);
+
+                data.setMongoFields(meta.getMongoFields());
+                data.init(MongoDbDelete.this);
+            }
+
+            if (!isStopped()) {
+
+                putRow(data.getOutputRowMeta(), row);
+
+                DBObject query = MongoDbDeleteData.getQueryObject(data.m_userFields, getInputRowMeta(), row, MongoDbDelete.this);
+                if (log.isDebug()) {
+                    logDebug(BaseMessages.getString(PKG, "MongoDbDelete.Message.Debug.QueryForDelete", query));
+                }
+                // We have query delete
+                if (query != null) {
+                    commitDelete(query, row);
+                }
+            }
+
+            return true;
+        }
     }
 
     @Override
@@ -249,6 +286,23 @@ public class MongoDbDelete extends BaseStep implements StepInterface {
                 throw new KettleException(lastEx);
             }
         }
+    }
+
+    public DBObject getQueryFromJSON(String json, Object[] row) throws KettleException {
+        DBObject query;
+        String jsonQuery = environmentSubstitute(json);
+        if (Const.isEmpty(jsonQuery)) {
+            query = new BasicDBObject();
+        } else {
+            if (meta.isExecuteForEachIncomingRow() && row != null) {
+                jsonQuery = fieldSubstitute(jsonQuery, getInputRowMeta(), row);
+            }
+
+            logDetailed(BaseMessages.getString(PKG, "MongoDbDelete.Message.ExecutingQuery", jsonQuery));
+
+            query = (DBObject) JSON.parse(jsonQuery);
+        }
+        return query;
     }
 
     final void checkInputFieldsMatch(RowMetaInterface rmi, List<MongoDbDeleteMeta.MongoField> mongoFields)

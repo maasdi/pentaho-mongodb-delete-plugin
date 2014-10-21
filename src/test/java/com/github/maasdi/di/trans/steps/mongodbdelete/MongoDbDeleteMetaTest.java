@@ -42,7 +42,8 @@ public class MongoDbDeleteMetaTest {
         List<String> commonFields =
                 Arrays.asList("mongo_host", "mongo_port", "use_all_replica_members", "mongo_user", "mongo_password",
                 "auth_kerberos", "mongo_db", "mongo_collection", "connect_timeout", "socket_timeout",
-                "read_preference", "write_concern", "w_timeout", "journaled_writes", "write_retries", "write_retry_delay", "mongo_fields");
+                "read_preference", "write_concern", "w_timeout", "journaled_writes", "write_retries", "write_retry_delay",
+                "use_json_query");
 
         Map<String, String> getterMap = new HashMap<String, String>();
         getterMap.put("mongo_host", "getHostnames");
@@ -54,6 +55,10 @@ public class MongoDbDeleteMetaTest {
         getterMap.put("mongo_db", "getDbName");
         getterMap.put("mongo_collection", "getCollection");
         getterMap.put("journaled_writes", "getJournal");
+        getterMap.put("write_retries", "getWriteRetries");
+        getterMap.put("use_json_query", "isUseJsonQuery");
+        getterMap.put("execute_each_incomming_row", "isExecuteForEachIncomingRow");
+        getterMap.put("json_query", "getJsonQuery");
 
         Map<String, String> setterMap = new HashMap<String, String>();
         setterMap.put("mongo_host", "setHostnames");
@@ -64,8 +69,11 @@ public class MongoDbDeleteMetaTest {
         setterMap.put("auth_kerberos", "setUseKerberosAuthentication");
         setterMap.put("mongo_db", "setDbName");
         setterMap.put("mongo_collection", "setCollection");
-        setterMap.put("batch_insert_size", "setBatchInsertSize");
         setterMap.put("journaled_writes", "setJournal");
+        setterMap.put("write_retries", "setWriteRetries");
+        setterMap.put("use_json_query", "setUseJsonQuery");
+        setterMap.put("execute_each_incomming_row", "setExecuteForEachIncomingRow");
+        setterMap.put("json_query", "setJsonQuery");
 
         LoadSaveTester tester = new LoadSaveTester(MongoDbDeleteMeta.class, commonFields, getterMap, setterMap);
 

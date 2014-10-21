@@ -51,6 +51,8 @@ import org.pentaho.di.core.variables.Variables;
 import org.pentaho.metastore.api.IMetaStore;
 
 import com.mongodb.DBObject;
+import com.mongodb.util.JSON;
+import org.pentaho.di.core.util.StringUtil;
 
 /**
  * Unit tests for MongoDbDelete
@@ -424,6 +426,59 @@ public class MongoDbDeleteTest {
         assertTrue(!newMeta.getUseKerberosAuthentication());
         assertTrue(!newMeta.getUseAllReplicaSetMembers());
         assertEquals("1000", newMeta.getSocketTimeout());
+    }
+
+    @Test
+    public void testSimpleQueryFromJSON() throws KettleException {
+        MongoDbDelete delete = prepareMongoDbDeleteMock();
+
+        String jsonQuery = "{ \"id\" : { \"$exists\" : true} , \"data\" : 10}";
+        Object[] row = new Object[1];
+        row[0] = "1250";
+
+        EasyMock.expect(delete.getQueryFromJSON(EasyMock.anyString(), EasyMock.aryEq(row))).andAnswer(new IAnswer<DBObject>() {
+
+            public DBObject answer() throws Throwable {
+                Object[] args = EasyMock.getCurrentArguments();
+                return (DBObject) JSON.parse(String.valueOf(args[0]));
+            }
+        });
+        EasyMock.replay(delete);
+
+        DBObject result = delete.getQueryFromJSON(jsonQuery, row);
+        assertNotNull("Result", result);
+        assertEquals("{ \"id\" : { \"$exists\" : true} , \"data\" : 10}", result.toString());
+    }
+
+    @Test
+    public void testSubtituteQueryFromJSON() throws Exception {
+        MongoDbDelete delete = prepareMongoDbDeleteMock();
+
+        String jsonQuery = "{ \"data\" : \"?{number}\"}";
+        RowMetaInterface rmi = new RowMeta();
+        ValueMetaInterface vm = ValueMetaFactory.createValueMeta("number", ValueMetaInterface.TYPE_STRING);
+        rmi.addValueMeta(vm);
+
+        Object[] row = new Object[1];
+        row[0] = 23;
+
+        final RowMetaInterface rowMeta = rmi;
+
+        EasyMock.expect(delete.getQueryFromJSON(EasyMock.anyString(), EasyMock.aryEq(row))).andAnswer(new IAnswer<DBObject>() {
+
+            public DBObject answer() throws Throwable {
+                Object[] args = EasyMock.getCurrentArguments();
+                String query = String.valueOf(args[0]);
+                Object[] row = (Object[]) args[1];
+                query = StringUtil.substituteField(query, rowMeta, row);
+                return (DBObject) JSON.parse(query);
+            }
+        });
+        EasyMock.replay(delete);
+
+        DBObject result = delete.getQueryFromJSON(jsonQuery, row);
+        assertNotNull("Result", result);
+        assertEquals("{ \"data\" : \"23\"}", result.toString());
     }
 
     private MongoDbDelete prepareMongoDbDeleteMock() {

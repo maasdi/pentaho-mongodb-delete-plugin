@@ -23,7 +23,6 @@
         <timestamp>${maven.build.timestamp}</timestamp>
         <maven.build.timestamp.format>yyyyMMdd-HHmm</maven.build.timestamp.format>
         <pentaho.kettle.version>5.0.1-stable</pentaho.kettle.version>
-        <pentaho.mongodb.plugin.version>5.0.4</pentaho.mongodb.plugin.version>
         <mongodb.driver.version>2.11.2</mongodb.driver.version>
     </properties>
 

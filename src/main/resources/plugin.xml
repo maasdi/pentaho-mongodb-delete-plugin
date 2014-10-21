@@ -10,7 +10,6 @@
 	<libraries>
 		<library name="pentaho-mongodb-delete-plugin-${project.version}.jar"/>
 		<library name="lib/mongo-java-driver-${mongodb.driver.version}.jar"/>
-		<library name="lib/pentaho-mongodb-plugin-${pentaho.mongodb.plugin.version}.jar"/>
 	</libraries>
 
 	<localized_category>

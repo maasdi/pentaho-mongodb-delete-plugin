@@ -18,7 +18,7 @@ Intallation
 --------
 1. Download binary [here][download-release] then extract the zip file OR If you build from source code go to folder target/pentaho-mongodb-delete-plugin
 2. Copy folder pentaho-mongodb-delete-plugin and all contents
-3. Paste to folder ${KETTLE/PDI INSTALATION DIRECTORY}/plugins/steps
+3. Paste to folder ${KETTLE_INSTALATION_DIRECTORY}/plugins/steps/
 4. If your PDI still running, please restart and you should see new steps MongoDB Delete under Big Data category
 
 ![alt text][step]

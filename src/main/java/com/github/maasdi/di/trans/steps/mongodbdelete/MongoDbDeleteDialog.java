@@ -91,8 +91,8 @@ public class MongoDbDeleteDialog extends BaseStepDialog implements StepDialogInt
     // The tabs of the dialog
     private CTabFolder m_wTabFolder;
     private CTabItem m_wConfigTab;
-    private CTabItem m_wOutputOptionsTab;
-    private CTabItem m_wMongoFieldsTab;
+    private CTabItem m_wDeleteOptionsTab;
+    private CTabItem m_wQueryTab;
     private Button m_getFieldsBut;
     private Button m_previewDocStructBut;
     private TextVar m_hostnameField;
@@ -419,8 +419,8 @@ public class MongoDbDeleteDialog extends BaseStepDialog implements StepDialogInt
         m_wConfigTab.setControl(wConfigComp);
 
         // --- start of the options tab
-        m_wOutputOptionsTab = new CTabItem(m_wTabFolder, SWT.NONE);
-        m_wOutputOptionsTab.setText("Output options"); //$NON-NLS-1$
+        m_wDeleteOptionsTab = new CTabItem(m_wTabFolder, SWT.NONE);
+        m_wDeleteOptionsTab.setText(BaseMessages.getString(PKG, "MongoDbDeleteDialog.DeleteTab.TabTitle"));
         Composite wOutputComp = new Composite(m_wTabFolder, SWT.NONE);
         props.setLook(wOutputComp);
         FormLayout outputLayout = new FormLayout();
@@ -680,11 +680,11 @@ public class MongoDbDeleteDialog extends BaseStepDialog implements StepDialogInt
         wOutputComp.setLayoutData(fd);
 
         wOutputComp.layout();
-        m_wOutputOptionsTab.setControl(wOutputComp);
+        m_wDeleteOptionsTab.setControl(wOutputComp);
 
         // --- start of the fields tab
-        m_wMongoFieldsTab = new CTabItem(m_wTabFolder, SWT.NONE);
-        m_wMongoFieldsTab.setText(BaseMessages.getString(PKG, "MongoDbDeleteDialog.FieldsTab.TabTitle")); //$NON-NLS-1$
+        m_wQueryTab = new CTabItem(m_wTabFolder, SWT.NONE);
+        m_wQueryTab.setText(BaseMessages.getString(PKG, "MongoDbDeleteDialog.QueryTab.TabTitle")); //$NON-NLS-1$
         Composite wFieldsComp = new Composite(m_wTabFolder, SWT.NONE);
         props.setLook(wFieldsComp);
         FormLayout filterLayout = new FormLayout();
@@ -841,7 +841,7 @@ public class MongoDbDeleteDialog extends BaseStepDialog implements StepDialogInt
         wFieldsComp.setLayoutData(fd);
 
         wFieldsComp.layout();
-        m_wMongoFieldsTab.setControl(wFieldsComp);
+        m_wQueryTab.setControl(wFieldsComp);
 
         fd = new FormData();
         fd.left = new FormAttachment(0, 0);

@@ -14,12 +14,21 @@ The Pentaho MongoDB Delete Plugin is built with Apache Maven for dependency mana
 
 Maven will compile and package all you need and will create new folder 'pentaho-mongodb-delete-plugin' under target directory.
 
-Intallation
+Installation
 --------
-1. Download binary [here][download-release] then extract the zip file OR If you build from source code go to folder target/pentaho-mongodb-delete-plugin
-2. Copy folder pentaho-mongodb-delete-plugin and all contents
-3. Paste to folder ${KETTLE_INSTALATION_DIRECTORY}/plugins/steps/
-4. If your PDI still running, please restart and you should see new steps MongoDB Delete under Big Data category
+**Install from Pentaho Marketplace**
+
+    1. From PDI, Select menu Help - Marketplace
+    2. And search MongoDB Delete Plugin, then click from search result
+    3. To install, click 'Install this plugin' button
+
+
+**Manual Installation**
+
+    1. Download binary [here][download-release] then extract the zip file OR If you build from source code go to folder target/pentaho-mongodb-delete-plugin
+    2. Copy folder pentaho-mongodb-delete-plugin and all contents
+    3. Paste to folder ${KETTLE_INSTALATION_DIRECTORY}/plugins/steps/
+    4. If your PDI still running, please restart and you should see new steps MongoDB Delete under Big Data category
 
 ![alt text][step]
 

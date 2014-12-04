@@ -38,7 +38,7 @@ Please go to [wiki page][docs] for the documentation.
 
 Issue
 -----
-Issue !? Please report [here][issue]
+Do you have issue while using this plugin ? Please report [here][issue]
 
 License
 -------

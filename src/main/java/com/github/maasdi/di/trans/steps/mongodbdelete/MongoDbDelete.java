@@ -22,6 +22,7 @@ import java.util.Set;
 
 import org.pentaho.di.core.Const;
 import org.pentaho.di.core.exception.KettleException;
+import org.pentaho.di.core.row.RowMeta;
 import org.pentaho.di.core.row.RowMetaInterface;
 import org.pentaho.di.i18n.BaseMessages;
 import org.pentaho.di.trans.Trans;
@@ -53,7 +54,6 @@ public class MongoDbDelete extends BaseStep implements StepInterface {
     private MongoDbDeleteData data;
     protected int m_writeRetries = MongoDbDeleteMeta.RETRIES;
     protected int m_writeRetryDelay = MongoDbDeleteMeta.RETRY_DELAY;
-    private Object[] m_currentRowQuery = null;
 
     public MongoDbDelete(StepMeta stepMeta, StepDataInterface stepDataInterface, int copyNr, TransMeta transMeta, Trans trans) {
         super(stepMeta, stepDataInterface, copyNr, transMeta, trans);
@@ -61,39 +61,39 @@ public class MongoDbDelete extends BaseStep implements StepInterface {
 
     @Override
     public boolean processRow(StepMetaInterface stepMetaInterface, StepDataInterface stepDataInterface) throws KettleException {
-
         Object[] row = getRow();
-
-        if (row == null) {
-            disconnect();
-            setOutputDone();
-            return false;
-        }
 
         if (meta.isUseJsonQuery()) {
             if (first) {
                 first = false;
 
-                data.setOutputRowMeta(getInputRowMeta());
+                if (getInputRowMeta() == null) {
+                    data.outputRowMeta = new RowMeta();
+                } else {
+                    data.setOutputRowMeta(getInputRowMeta());
+                }
                 data.init(MongoDbDelete.this);
 
                 DBObject query = getQueryFromJSON(meta.getJsonQuery(), row);
                 commitDelete(query, row);
-            }
+            } else if (meta.isExecuteForEachIncomingRow()) {
 
-            if (meta.isExecuteForEachIncomingRow() && m_currentRowQuery == null) {
-                m_currentRowQuery = getRow();
-
-                if (m_currentRowQuery == null) {
+                if (row == null) {
                     disconnect();
                     setOutputDone();
                     return false;
                 }
 
                 if (!first) {
-                    DBObject query = getQueryFromJSON(meta.getJsonQuery(), m_currentRowQuery);
+                    DBObject query = getQueryFromJSON(meta.getJsonQuery(), row);
                     commitDelete(query, row);
                 }
+            }
+
+            if (row == null) {
+                disconnect();
+                setOutputDone();
+                return false;
             }
 
             if (!isStopped()) {
@@ -102,6 +102,12 @@ public class MongoDbDelete extends BaseStep implements StepInterface {
 
             return true;
         } else {
+
+            if (row == null) {
+                disconnect();
+                setOutputDone();
+                return false;
+            }
 
             if (first) {
                 first = false;
@@ -247,6 +253,7 @@ public class MongoDbDelete extends BaseStep implements StepInterface {
             WriteResult result = null;
             CommandResult cmd = null;
             try {
+                logDetailed(BaseMessages.getString(PKG, "MongoDbDelete.Message.ExecutingQuery", deleteQuery));
                 result = data.getCollection().drop(deleteQuery);
 
                 cmd = result.getLastError();
@@ -297,8 +304,6 @@ public class MongoDbDelete extends BaseStep implements StepInterface {
             if (meta.isExecuteForEachIncomingRow() && row != null) {
                 jsonQuery = fieldSubstitute(jsonQuery, getInputRowMeta(), row);
             }
-
-            logDetailed(BaseMessages.getString(PKG, "MongoDbDelete.Message.ExecutingQuery", jsonQuery));
 
             query = (DBObject) JSON.parse(jsonQuery);
         }

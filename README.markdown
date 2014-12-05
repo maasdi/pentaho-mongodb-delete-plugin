@@ -40,6 +40,15 @@ Issue
 -----
 Do you have issue while using this plugin ? Please report [here][issue]
 
+Sample
+------
+Here are the samples how to use:
+
+1. [delete-all.ktr](https://raw.githubusercontent.com/maasdi/pentaho-mongodb-delete-plugin/master/src/main/resources/sample/delete-all.ktr)
+2. [delete-by-incoming-row.ktr](https://raw.githubusercontent.com/maasdi/pentaho-mongodb-delete-plugin/master/src/main/resources/sample/delete-by-incoming-row.ktr)
+3. [delete-by-json-query.ktr](https://raw.githubusercontent.com/maasdi/pentaho-mongodb-delete-plugin/master/src/main/resources/sample/delete-by-json-query.ktr)
+4. [delete-by-json-query-exec-each-row.ktr](https://raw.githubusercontent.com/maasdi/pentaho-mongodb-delete-plugin/master/src/main/resources/sample/delete-by-json-query-exec-each-row.ktr)
+
 License
 -------
 Licensed under the Apache License, Version 2.0.

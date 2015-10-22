@@ -1,1 +1,94 @@
-"My Page" 
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <title>Pentaho MongoDB Plugin</title>
+  </head>
+
+  <body>
+    <div id="container">
+      <div class="inner">
+
+        <header>
+          <h1>Pentaho MongoDB Plugin</h1>
+          <h2>A Pentaho Data Integration Plugin to provides kettle steps for delete document inside a Mongo DB collection</h2>
+        </header>
+
+        <section id="downloads" class="clearfix">
+          <a href="https://github.com/maasdi/pentaho-mongodb-delete-plugin/releases/download/1.0.0-RELEASE/pentaho-mongodb-delete-plugin-1.0.0-RELEASE.zip" id="download-zip" class="button"><span>Download .zip</span></a>
+          <a href="https://github.com/maasdi/pentaho-mongodb-delete-plugin" id="view-on-github" class="button"><span>View on GitHub</span></a>
+        </section>
+
+        <hr>
+
+        <section id="main_content">
+        <h2>Build</h2>
+        <p>The Pentaho MongoDB Delete Plugin is built with Apache Maven for dependency management. To build from source code.</p>
+
+        <div class="highlight">
+        <pre>
+$ git clone git://github.com/maasdi/pentaho-mongodb-delete-plugin.git
+$ cd pentaho-mongodb-delete-plugin
+$ mvn package</pre>
+        </div>
+        <p>Maven will compile and package all you need and will create new folder 'pentaho-mongodb-delete-plugin' under target directory.</p>
+
+        <h2>Installation</h2>
+        <p>To install please follow the instruction bellow :</p>
+
+        <h4>Install from Pentaho Marketplace</h4>
+        <div>
+          <ol>
+            <li>From PDI, Select menu Help - Marketplace</li>
+            <li>Search MongoDB Delete Plugin, click MongoDB Delete Plugin row from search result</li>
+            <li>To install, click 'Install this plugin' button</li>
+          </ol>
+        </div>
+
+        <h4>Manual Installation</h4>
+        <div>
+          <ol>
+            <li>Download binary <a href="https://github.com/maasdi/pentaho-mongodb-delete-plugin/releases/download/1.0.0-RELEASE/pentaho-mongodb-delete-plugin-1.0.0-RELEASE.zip">here</a> then extract the zip file OR If you build from source code go to folder target/pentaho-mongodb-delete-plugin</li>
+            <li>Copy folder pentaho-mongodb-delete-plugin and all contents</li>
+            <li>Paste to folder ${KETTLE_INSTALATION_DIRECTORY}/plugins/steps/</li>
+            <li>If your PDI still running, please restart and you should see new steps MongoDB Delete under Big Data category</li>
+          </ol>
+        </div>
+
+        <h2>Documentation</h2>
+        <p>Please go to <a href="https://github.com/maasdi/pentaho-mongodb-delete-plugin/wiki/MongoDB-Delete">wiki</a> page for the documentation.</p>
+
+        <h2>Issue</h2>
+        <p>Do you have issue while using this plugin ? Please report <a href="https://github.com/maasdi/pentaho-mongodb-delete-plugin/issues">here</a></p>
+
+        <h2>Sample</h2>
+        <p>Here are the samples how to use:</p>
+        <div>
+            <ol>
+              <li><a href="https://raw.githubusercontent.com/maasdi/pentaho-mongodb-delete-plugin/master/src/main/resources/sample/delete-all.ktr">delete-all.ktr</a></li>
+              <li><a href="https://raw.githubusercontent.com/maasdi/pentaho-mongodb-delete-plugin/master/src/main/resources/sample/delete-by-incoming-row.ktr">delete-by-incoming-row.ktr</a></li>
+              <li><a href="https://raw.githubusercontent.com/maasdi/pentaho-mongodb-delete-plugin/master/src/main/resources/sample/delete-by-json-query.ktr">delete-by-json-query.ktr</a></li>
+              <li><a href="https://raw.githubusercontent.com/maasdi/pentaho-mongodb-delete-plugin/master/src/main/resources/sample/delete-by-json-query-exec-each-row.ktr">delete-by-json-query-exec-each-row.ktr</a></li>
+            </ol>
+        </div>
+
+        <h2>License</h2>
+        <p>Licensed under the Apache License, Version 2.0.</p>
+        </section>
+
+        <footer>
+          Tactile theme by <a href="https://github.com/jasonlong">Jason Long</a>.
+        </footer>
+
+      </div>
+    </div>
+  </body>
+</html>

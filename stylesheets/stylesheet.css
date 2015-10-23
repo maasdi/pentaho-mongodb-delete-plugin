@@ -300,6 +300,13 @@ ul li {
   padding-left: 20px;
 }
 
+ol {
+    padding-top: 2px;
+    padding-bottom: 0px;
+    padding-right: 0px;
+    padding-left: 19px;
+}
+
 ol li {
   list-style-position: inside;
   list-style: decimal;

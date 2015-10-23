@@ -351,7 +351,7 @@ footer a:hover {
 /* All Mobile Sizes (devices and browser) */
 @media only screen and (max-width: 767px) {
   header {
-    padding-top: 10px;
+    padding-top: 45px;
     padding-bottom: 10px;
   }
   #downloads {
@@ -386,7 +386,7 @@ footer a:hover {
   height: 38px;
   text-align: center;
 }
-/* line 154, ../sass/app.scss */
+
 #navigation .nav {
   width: 100%;
   z-index: 10;
@@ -397,7 +397,7 @@ footer a:hover {
   -moz-box-shadow: 0px 0px 5px #333333;
   box-shadow: 0px 0px 5px #333333;
 }
-/* line 161, ../sass/app.scss */
+
 #navigation .nav .nav-bar {
   margin: 0;
   display: inline-block;
@@ -406,7 +406,7 @@ footer a:hover {
   border-left: 1px solid #444;
   height: 38px;
 }
-/* line 168, ../sass/app.scss */
+
 #navigation .nav .nav-bar > li {
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
@@ -418,17 +418,57 @@ footer a:hover {
   border-right: 1px solid #444;
   line-height: 38px;
 }
-/* line 177, ../sass/app.scss */
+
 #navigation .nav .nav-bar > li:hover, #navigation .nav .nav-bar > li.active {
   background: #444;
   -webkit-box-shadow: inset 0 0 15px 5px #222222;
   -moz-box-shadow: inset 0 0 15px 5px #222222;
   box-shadow: inset 0 0 15px 5px #222222;
 }
-/* line 181, ../sass/app.scss */
+
 #navigation .nav .nav-bar > li a {
   display: block;
   padding: 0 15px;
   color: #fff;
   font-size: 0.75em;
+}
+
+
+#mobile-header {
+  display: none;
+  height: 48px;
+  background: #222;
+  text-align: left;
+  line-height: 48px;
+}
+
+#mobile-header #responsive-menu-button {
+  margin-left: 5px;
+  color: #fff;
+  background: #444;
+  padding: 10px 10px 8px;
+  font-family: Arial, sans-serif;
+  font-size: 0.6875em;
+}
+
+
+@media only screen and (max-width: 767px) {
+  
+  #forkme {
+    display: none;
+  }
+  
+  #navigation {
+    display: none;
+  }
+
+  #mobile-header {
+    display: block;
+    position: absolute;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 200;
+  }
+  
 }

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="../stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="../stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="../stylesheets/print.css" media="print" />
+    <link rel="stylesheet" type="text/css" href="../js/sidr/stylesheets/jquery.sidr.dark.css">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/sidr/jquery.sidr.min.js"></script>
+    <script type="text/javascript" src="../js/app.js"></script>
+    <title>Pentaho MongoDB Delete Plugin</title>
+  </head>
+  <body>
+    <div id="container">
+      <div class="inner">
+
+        <header>
+          <h1>Pentaho MongoDB Delete Plugin</h1>
+          <h2>A Pentaho Data Integration Plugin to delete MongoDB document</h2>
+        </header>
+
+        <section id="downloads" class="clearfix">
+          <a href="https://github.com/maasdi/pentaho-mongodb-delete-plugin/releases/download/1.0.0-RELEASE/pentaho-mongodb-delete-plugin-1.0.0-RELEASE.zip" id="download-zip" class="button"><span>Download .zip</span></a>
+          <a href="https://github.com/maasdi/pentaho-mongodb-delete-plugin" id="view-on-github" class="button"><span>View on GitHub</span></a>
+        </section>
+
+        <hr>
+
+        <section id="main_content">
+            <h2>Delete All Records</h2>
+            <p>To delete all records, you can use JSON query feature.</p>
+
+            <p>Let's create customer data from mongodb console:</p>
+            <div class="highlight">
+                <pre>use mongodbdelete
+db.customer.insert({first_name:"OLVERA", last_name:"DWAYNE", phone: "62127829280", email:"olvera.dwayne@yahoo.com", gender: "F"})
+db.customer.insert({first_name:"JASON", last_name:"DWAYNE", phone: "62127829280", email:"jason.dwayne@yahoo.com", gender: "M"})
+db.customer.insert({first_name:"HUEY", last_name:"BRANDON", phone: "99883471275", email:"huey.brandon@yahoo.com", gender: "M"})
+db.customer.insert({first_name:"BROWN", last_name:"ELIZABETH", phone: "10655648674", email:"elizabeth.brown@gmail.com", gender: "M"})
+db.customer.insert({first_name:"OWENS", last_name:"CARMEN", phone: "272234298332", email:"owens.carmen@gmail.com", gender: "F"})
+db.customer.insert({first_name:"HANNON", last_name:"SETH", phone: "864392582257", email:"hannon.seth@gmail.com", gender: "F"})
+                </pre>
+            </div>
+
+            <p>In mongodb to delete all records inside customer collection, the command:</p>
+            <div class="highlight">
+                <pre>use mongodbdelete
+db.customer.remove()
+                </pre>
+            </div>
+
+            <p>To get the same result using Pentaho MongoDB Delete Plugin, follow steps bellow :<br/>
+                Step 1: Configure connection
+            </p>
+
+            <img src="https://raw.githubusercontent.com/maasdi/pentaho-mongodb-delete-plugin/master/src/main/resources/doc/1.png">
+
+            <p>Step 2: Set database and collection</p>
+            <img src="https://raw.githubusercontent.com/maasdi/pentaho-mongodb-delete-plugin/master/src/main/resources/doc/2.png">
+
+            <p>Step 3: Configure query</p>
+            <img src="https://raw.githubusercontent.com/maasdi/pentaho-mongodb-delete-plugin/master/src/main/resources/doc/3.png">
+
+            <p>To delete all records query use here is {} or you can just leave query empty, the result will be the same.</p>
+
+            <h4>Resources</h4>
+            <p>Sample Transformation : <a href="https://raw.githubusercontent.com/maasdi/pentaho-mongodb-delete-plugin/master/src/main/resources/sample/delete-all.ktr">delete-all.ktr</a></p>
+        </section>
+
+      </div>
+  </div>
+</body>
+</html>

@@ -395,6 +395,9 @@ footer a:hover {
 }
 
 #navigation .nav {
+  position: absolute;
+  position: fixed;
+  top: 0;
   width: 100%;
   z-index: 10;
   height: 38px;

@@ -123,7 +123,8 @@
     <repositories>
         <repository>
             <id>pentaho-repo</id>
-            <url>http://repo.pentaho.org/artifactory/pentaho/</url>
+            <!--url>http://repo.pentaho.org/artifactory/pentaho/</url-->
+            <url>http://repository.pentaho.org/artifactory/repo/</url>
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>

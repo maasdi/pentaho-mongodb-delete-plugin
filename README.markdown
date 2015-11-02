@@ -38,7 +38,7 @@ Please go to [wiki page][docs] for the documentation.
 
 Issue
 -----
-Do you have issue while using this plugin ? Please report [here][issue]
+Do you have issue while using this plugin? Please report [here][issue]
 
 Sample
 ------
@@ -55,5 +55,5 @@ Licensed under the Apache License, Version 2.0.
 
 [step]: https://raw.githubusercontent.com/maasdi/pentaho-mongodb-delete-plugin/master/MongDB%20Delete.png "MongoDB Delete Step"
 [download-release]: https://github.com/maasdi/pentaho-mongodb-delete-plugin/releases/download/1.0.0-RELEASE/pentaho-mongodb-delete-plugin-1.0.0-RELEASE.zip
-[docs]: https://github.com/maasdi/pentaho-mongodb-delete-plugin/wiki/MongoDB-Delete
+[docs]: http://maasdi.github.io/pentaho-mongodb-delete-plugin
 [issue]: https://github.com/maasdi/pentaho-mongodb-delete-plugin/issues

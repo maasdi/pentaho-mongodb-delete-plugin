@@ -8,14 +8,11 @@
     <link rel="stylesheet" type="text/css" href="../stylesheets/stylesheet.css" media="screen" />
     <link rel="stylesheet" type="text/css" href="../stylesheets/pygment_trac.css" media="screen" />
     <link rel="stylesheet" type="text/css" href="../stylesheets/print.css" media="print" />
-    <link rel="stylesheet" type="text/css" href="../js/sidr/stylesheets/jquery.sidr.dark.css">
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-    <script type="text/javascript" src="../js/sidr/jquery.sidr.min.js"></script>
     <script type="text/javascript" src="../js/app.js"></script>
-    <title>Pentaho MongoDB Delete Plugin</title>
+    <title>Pentaho MongoDB Delete Plugin - Delete all</title>
   </head>
   <body>
     <div id="container">
@@ -26,15 +23,10 @@
           <h2>A Pentaho Data Integration Plugin to delete MongoDB document</h2>
         </header>
 
-        <section id="downloads" class="clearfix">
-          <a href="https://github.com/maasdi/pentaho-mongodb-delete-plugin/releases/download/1.0.0-RELEASE/pentaho-mongodb-delete-plugin-1.0.0-RELEASE.zip" id="download-zip" class="button"><span>Download .zip</span></a>
-          <a href="https://github.com/maasdi/pentaho-mongodb-delete-plugin" id="view-on-github" class="button"><span>View on GitHub</span></a>
-        </section>
-
         <hr>
 
         <section id="main_content">
-            <h2>Delete All Records</h2>
+            <h2>Delete all</h2>
             <p>To delete all records, you can use JSON query feature.</p>
 
             <p>Let's create customer data from mongodb console:</p>
@@ -68,12 +60,15 @@ db.customer.remove()
             <p>Step 3: Configure query</p>
             <img src="https://raw.githubusercontent.com/maasdi/pentaho-mongodb-delete-plugin/master/src/main/resources/doc/3.png">
 
-            <p>To delete all records query use here is {} or you can just leave query empty, the result will be the same.</p>
+            <p>To delete all records query use here is <code>{}</code> or you can just leave query empty, the result will be the same.</p>
 
             <h4>Resources</h4>
             <p>Sample Transformation : <a href="https://raw.githubusercontent.com/maasdi/pentaho-mongodb-delete-plugin/master/src/main/resources/sample/delete-all.ktr">delete-all.ktr</a></p>
         </section>
 
+        <footer>
+          Tactile theme by <a href="https://github.com/jasonlong">Jason Long</a>.
+        </footer>
       </div>
   </div>
 </body>

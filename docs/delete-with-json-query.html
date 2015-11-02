@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="../stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="../stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="../stylesheets/print.css" media="print" />
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <script type="text/javascript" src="../js/app.js"></script>
+    <title>Pentaho MongoDB Delete Plugin - Delete with json query</title>
+  </head>
+  <body>
+        <div id="container">
+            <div class="inner">
+                <header>
+                  <h1>Pentaho MongoDB Delete Plugin</h1>
+                  <h2>A Pentaho Data Integration Plugin to delete MongoDB document</h2>
+                </header>
+
+                <hr>
+
+                <section id="main_content">
+                    <h2>Delete with json query</h2>
+                    <p>In MongoDB Delete Plugin you can use JSON query. JSON query gives you flexibility to write your own query, more detail you can go to <a href="http://docs.mongodb.org/manual/tutorial/query-documents/">MongoDB Documentation</a>.</p>
+
+                    <p>Given data :</p>
+                    <div class="highlight">
+                      <pre>use mongodbdelete
+db.customer.insert({first_name:"OLVERA", last_name:"DWAYNE", phone: "62127829280", email:"olvera.dwayne@yahoo.com", gender: "F"})
+db.customer.insert({first_name:"JASON", last_name:"DWAYNE", phone: "62127829280", email:"jason.dwayne@yahoo.com", gender: "M"})
+db.customer.insert({first_name:"HUEY", last_name:"BRANDON", phone: "99883471275", email:"huey.brandon@yahoo.com", gender: "M"})
+db.customer.insert({first_name:"BROWN", last_name:"ELIZABETH", phone: "10655648674", email:"elizabeth.brown@gmail.com", gender: "M"})
+db.customer.insert({first_name:"OWENS", last_name:"CARMEN", phone: "272234298332", email:"owens.carmen@gmail.com", gender: "F"})
+db.customer.insert({first_name:"HANNON", last_name:"SETH", phone: "864392582257", email:"hannon.seth@gmail.com", gender: "F"})
+                      </pre>
+                    </div>
+                    <p>Let's delete records where gender is M (Male)</p>
+
+                    <p>Step 1: Configure connection</p>
+                    <img src="https://raw.githubusercontent.com/maasdi/pentaho-mongodb-delete-plugin/master/src/main/resources/doc/1.png">
+
+                    <p>Step 2: Set database and collection</p>
+                    <img src="https://raw.githubusercontent.com/maasdi/pentaho-mongodb-delete-plugin/master/src/main/resources/doc/2.png">
+
+                    <p>Step 3: Configure query</p>
+                    <img src="https://raw.githubusercontent.com/maasdi/pentaho-mongodb-delete-plugin/master/src/main/resources/doc/4.png">
+
+                    <h4>Resources</h4>
+                    <p>Sample Transformation : <a href="https://raw.githubusercontent.com/maasdi/pentaho-mongodb-delete-plugin/master/src/main/resources/sample/delete-by-json-query.ktr">delete-by-json-query.ktr</a></p>
+                </section>
+
+                <footer>
+                  Tactile theme by <a href="https://github.com/jasonlong">Jason Long</a>.
+                </footer>                
+            </div>
+        </div>
+  </body>
+</html>

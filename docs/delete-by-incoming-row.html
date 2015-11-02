@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="../stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="../stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="../stylesheets/print.css" media="print" />
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <script type="text/javascript" src="../js/app.js"></script>
+    <title>Pentaho MongoDB Delete Plugin - Delete by incoming row</title>
+  </head>
+  <body>
+        <div id="container">
+            <div class="inner">
+                <header>
+                  <h1>Pentaho MongoDB Delete Plugin</h1>
+                  <h2>A Pentaho Data Integration Plugin to delete MongoDB document</h2>
+                </header>
+
+                <hr>
+
+                <section id="main_content">
+                    <h2>Delete by incoming row</h2>
+                    <p>The MongoDB Delete transformation step enables you to delete documents inside MongoDB collection. For additional information about MongoDB, see the MongoDB documentation.</p>
+
+                    <h4>Configure connection tab</h4>
+                    <p>The Configure connection tab enables you to specify the database and collection to query.</p>
+
+                    <table class="table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Option</th>
+                                <th>Definition</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Step name</td>
+                                <td>Name of the step as it appears in the transformation workspace.</td>
+                            </tr>
+                            <tr>
+                                <td>Host name(s) or IP address(es)</td>
+                                <td>The network name or address of MongoDB innstance</td>
+                            </tr>
+                            <tr>
+                                <td>Use all replica set members/mongos</td>
+                                <td>Differentiates between a replica set containing one node and a stand-alone single Mongo host.</td>
+                            </tr>
+                            <tr>
+                                <td>Port</td>
+                                <td>Indicates the port number of the MongoDB instance or instances. Specify a default port to use if no port numbers are specified in the Host name(s) or IP address(es) field</td>
+                            </tr>
+                            <tr>
+                                <td>Username</td>
+                                <td>Indicates the username required to access the database.</td>
+                            </tr>
+                            <tr>
+                                <td>Password</td>
+                                <td>Indicates the password associated with the provided Username.</td>
+                            </tr>
+                            <tr>
+                                <td>Authenticate using Kerberos</td>
+                                <td>Indicates whether to use the Kerberos service to manage the authentication process. If you check this, make sure that you enter the Kerberos principal as the Username.</td>
+                            </tr>
+                            <tr>
+                                <td>Connection timeout</td>
+                                <td>Designates how long to wait for a connection to a database (in milliseconds) before terminating the connection attempt. Leave blank to never terminate the connection.</td>
+                            </tr>
+                            <tr>
+                                <td>Socket timeout</td>
+                                <td>Designates how long to wait for a write operation (in milliseconds) before terminating the operation. Leave blank to never terminate the operation.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br/>
+
+                    <h4>Delete options tab</h4>
+                    <p>The Delete Options tab enables you to specify which database and collection you want to retrieve information from. You can also indicate the read preferences and tag sets in this tab</p>
+
+                    <table class="table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Option</th>
+                                <th>Definition</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Database</td>
+                                <td>Name of the database to retrieve data from. Click Get DBs to populate the drop-down menu with a list of databases on the server.</td>
+                            </tr>
+                            <tr>
+                                <td>Collection</td>
+                                <td>Name of the collection to retrieve data from. Click Get collections to populate the drop-down menu with a list of collections within the database.</td>
+                            </tr>
+                            <tr>
+                                <td>Read preference</td>
+                                <td>Indicates which node to read first—Primary, Primary preferred, Secondary, Secondary preferred, or Nearest.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br/>
+
+                    <h4>Delete query tab</h4>
+                    <p>The Delete query tab enables you to define your criteria of document you want to delete.<br/>
+You can define your delete criteria in two different ways :</p>
+
+                    <h5>1. Build delete criteria base on available data from previous steps</h5>
+                    <table class="table-bordered">
+                        <thead>
+                            <tr>
+                            <th>Option</th>
+                            <th align="left">Definition</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                            <td>Use JSON Query</td>
+                            <td align="left">Leave it default if you want to criteria base on available data from previous steps for your delete criteria</td>
+                            </tr>
+                            <tr>
+                            <td>Mongo document path</td>
+                            <td align="left">The key of your MongoDB you want to use as criteria. sample _id, name, age</td>
+                            </tr>
+                            <tr>
+                            <td>Comparator</td>
+                            <td align="left">The comparator will be use. The value will be: = (equal), &lt;&gt; (not equal), &lt; (less than), &lt;= (less than equal), &gt; (greater than), &gt;= (greater than equal), BETWEEN, IS NULL, IS NOT NULL</td>
+                            </tr>
+                            <tr>
+                            <td>Incoming field 1</td>
+                            <td align="left">Field name will be use as value to compare</td>
+                            </tr>
+                            <tr>
+                            <td>Incoming field 2</td>
+                            <td align="left">The second field name, this is field need for comparator with two argument. In this case BETWEEN</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br/>
+
+                    <h5>2. Use JSON Query expression</h5>
+                    <table class="table-bordered">
+                        <thead>
+                            <tr>
+                            <th>Option</th>
+                            <th align="left">Definition</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                            <td>Use JSON Query</td>
+                            <td align="left">Choose this option if you want to use JSON query expression for your delete criteria, when you tick this option the Query will be displayed</td>
+                            </tr>
+                            <tr>
+                            <td>Execute for each row</td>
+                            <td align="left">Use this option if you want to use substitute field variable. Example: <code>{"_id": "?{id_field}"}</code> the '?{id_field}' will replace with value of field <code>id_field</code> on runtime</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br/>
+
+                    <h4>Resources</h4>
+                    <p>Sample Transformation : <a href="https://raw.githubusercontent.com/maasdi/pentaho-mongodb-delete-plugin/master/src/main/resources/sample/delete-by-incoming-row.ktr">delete-by-incoming-row.ktr</a></p>
+                </section>
+
+                <footer>
+                  Tactile theme by <a href="https://github.com/jasonlong">Jason Long</a>.
+                </footer>                
+            </div>
+        </div>
+  </body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="../stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="../stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="../stylesheets/print.css" media="print" />
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <script type="text/javascript" src="../js/app.js"></script>
+    <title>Pentaho MongoDB Delete Plugin - Delete with json query and execute each row</title>
+  </head>
+  <body>
+        <div id="container">
+            <div class="inner">
+                <header>
+                  <h1>Pentaho MongoDB Delete Plugin</h1>
+                  <h2>A Pentaho Data Integration Plugin to delete MongoDB document</h2>
+                </header>
+
+                <hr>
+
+                <section id="main_content">
+                    <h2>Delete with json query and execute each row</h2>
+                    <p>MongoDB Delete Plugin has ability to get value of incoming data and use it as parameter in your query.</p>
+
+                    <p>Let's say you have row:</p>
+                    <img src="https://raw.githubusercontent.com/maasdi/pentaho-mongodb-delete-plugin/master/src/main/resources/doc/6.png">
+
+                    <p>and have data structure like :</p>
+                    <div class="highlight">
+                      <pre>use mongodbdelete
+db.customer.insert({first_name:"OLVERA", last_name:"DWAYNE", phone: "62127829280", email:"olvera.dwayne@yahoo.com", gender: "F"})
+db.customer.insert({first_name:"JASON", last_name:"DWAYNE", phone: "62127829280", email:"jason.dwayne@yahoo.com", gender: "M"})
+db.customer.insert({first_name:"HUEY", last_name:"BRANDON", phone: "99883471275", email:"huey.brandon@yahoo.com", gender: "M"})
+db.customer.insert({first_name:"BROWN", last_name:"ELIZABETH", phone: "10655648674", email:"elizabeth.brown@gmail.com", gender: "M"})
+db.customer.insert({first_name:"OWENS", last_name:"CARMEN", phone: "272234298332", email:"owens.carmen@gmail.com", gender: "F"})
+db.customer.insert({first_name:"HANNON", last_name:"SETH", phone: "864392582257", email:"hannon.seth@gmail.com", gender: "F"})
+                      </pre>
+                    </div>
+
+                    <p>and you want to use it's value as parameter. Example: Delete row where first_name equals with value of firstname and last_name equals with value of lastname</p>
+
+                    <p>To do that, you can write query:</p>
+                    <img src="https://raw.githubusercontent.com/maasdi/pentaho-mongodb-delete-plugin/master/src/main/resources/doc/7.png">
+
+                    <p>The <code>?{firstname}</code> and <code>?{lastname}</code> will replace by value of respective column during execution.</p>
+
+                    <h4>Resources</h4>
+            <p>Sample Transformation : <a href="https://raw.githubusercontent.com/maasdi/pentaho-mongodb-delete-plugin/master/src/main/resources/sample/delete-by-json-query-exec-each-row.ktr">delete-by-json-query-exec-each-row.ktr</a></p>
+                </section>
+
+                <footer>
+                  Tactile theme by <a href="https://github.com/jasonlong">Jason Long</a>.
+                </footer>                
+            </div>
+        </div>
+  </body>
+</html>

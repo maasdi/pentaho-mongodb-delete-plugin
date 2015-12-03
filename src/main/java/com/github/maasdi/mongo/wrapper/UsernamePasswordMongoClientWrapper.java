@@ -94,7 +94,7 @@ public class UsernamePasswordMongoClientWrapper extends NoAuthMongoClientWrapper
    * @return a configured MongoCredential object
    */
   protected MongoCredential getCredential( MongoDbMeta meta, VariableSpace vars ) {
-    return MongoCredential.createMongoCRCredential( vars.environmentSubstitute( meta.getAuthenticationUser() ), vars
+    return MongoCredential.createCredential( vars.environmentSubstitute( meta.getAuthenticationUser() ), vars
         .environmentSubstitute( meta.getDbName() ), Encr.decryptPasswordOptionallyEncrypted(
         vars.environmentSubstitute( meta.getAuthenticationPassword() ) ).toCharArray() );
   }

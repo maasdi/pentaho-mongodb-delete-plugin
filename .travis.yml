@@ -1,3 +1,8 @@
 language: java
-mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
-mvn test -B
+sudo: false
+
+before_script:
+	- mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+
+script:
+	- mvn test -B

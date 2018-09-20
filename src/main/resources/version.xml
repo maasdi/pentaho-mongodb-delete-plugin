@@ -1,1 +1,0 @@
-<version branch='master' buildId='${timestamp}'>${project.version}</version>

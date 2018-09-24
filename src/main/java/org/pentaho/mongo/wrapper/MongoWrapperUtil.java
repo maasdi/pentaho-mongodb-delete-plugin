@@ -17,10 +17,10 @@
 
 package org.pentaho.mongo.wrapper;
 
+import com.github.maasdi.di.trans.steps.mongodb.MongoDbMeta;
 import org.pentaho.di.core.encryption.Encr;
 import org.pentaho.di.core.logging.LogChannelInterface;
 import org.pentaho.di.core.variables.VariableSpace;
-import org.pentaho.di.trans.steps.mongodb.MongoDbMeta;
 import org.pentaho.mongo.MongoDbException;
 import org.pentaho.mongo.MongoProp;
 import org.pentaho.mongo.MongoProperties;

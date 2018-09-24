@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.pentaho.di.trans.steps.mongodbdelete;
+package com.github.maasdi.di.trans.steps.mongodbdelete;
 
 import org.junit.Test;
 import org.pentaho.di.core.exception.KettleException;

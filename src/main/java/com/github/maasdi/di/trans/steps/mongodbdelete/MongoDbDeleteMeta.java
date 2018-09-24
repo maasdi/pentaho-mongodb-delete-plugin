@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.pentaho.di.trans.steps.mongodbdelete;
+package com.github.maasdi.di.trans.steps.mongodbdelete;
 
+import com.github.maasdi.di.trans.steps.mongodb.MongoDbMeta;
 import org.pentaho.di.core.Const;
 import org.pentaho.di.core.annotations.Step;
 import org.pentaho.di.core.database.DatabaseMeta;
@@ -31,7 +32,6 @@ import org.pentaho.di.trans.step.StepDataInterface;
 import org.pentaho.di.trans.step.StepInterface;
 import org.pentaho.di.trans.step.StepMeta;
 import org.pentaho.di.trans.step.StepMetaInterface;
-import org.pentaho.di.trans.steps.mongodb.MongoDbMeta;
 import org.pentaho.metastore.api.IMetaStore;
 import org.w3c.dom.Node;
 
@@ -81,8 +81,7 @@ public class MongoDbDeleteMeta extends MongoDbMeta implements StepMetaInterface 
 
     @Override
     public String getDialogClassName() {
-//        return "com.github.maasdi.di.trans.steps.mongodbdelete.MongoDbDeleteDialog";
-        return "org.pentaho.di.trans.steps.mongodbdelete.MongoDbDeleteDialog";
+        return "com.github.maasdi.di.trans.steps.mongodbdelete.MongoDbDeleteDialog";
     }
 
     public static class MongoField {

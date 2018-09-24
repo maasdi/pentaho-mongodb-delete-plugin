@@ -15,7 +15,7 @@
  *
  */
 
-package org.pentaho.di.trans.steps.mongodb;
+package com.github.maasdi.di.trans.steps.mongodb;
 
 import java.util.List;
 

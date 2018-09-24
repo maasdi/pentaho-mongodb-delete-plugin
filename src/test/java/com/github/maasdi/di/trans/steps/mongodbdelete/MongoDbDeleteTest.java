@@ -13,7 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.pentaho.di.trans.steps.mongodbdelete;
+package com.github.maasdi.di.trans.steps.mongodbdelete;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import com.mongodb.DBObject;
 import org.easymock.EasyMock;
@@ -39,17 +46,11 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 /**
  * Unit tests for MongoDbDelete
@@ -371,6 +372,7 @@ public class MongoDbDeleteTest {
             delete.checkInputFieldsMatch(rmi, mongoFields);
         } catch (Exception e) {
             String detailedMessage = e.getMessage();
+            System.out.println("detailedMessage: " + detailedMessage);
             Assert.assertTrue("Exception message mentions fields not found:", detailedMessage.contains("b1"));
             throw new KettleException(e);
         }

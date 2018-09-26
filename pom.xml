@@ -15,7 +15,7 @@
   <inceptionYear>2014</inceptionYear>
   
   <name>pentaho-mongodb-delete-plugin</name>
-  <description>a Pentaho mongodb plugin to delete records</description>
+  <description>A Pentaho Data Integration Plugin to delete MongoDB document</description>
   <url>https://github.com/maasdi/pentaho-mongodb-delete-plugin</url>
   
   <developers>
